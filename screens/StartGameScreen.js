@@ -1,7 +1,31 @@
-import { TextInput, StyleSheet, View } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
+import { useState } from "react";
+import { TextInput, StyleSheet, View, Alert } from "react-native";
+import PrimaryButton from "../components/ui/PrimaryButton";
 
-const StartGameScreen = () => {
+const StartGameScreen = (props) => {
+  const [enteredNumber, setEnteredNumber] = useState("");
+
+  function numberInputHandler(enteredText) {
+    setEnteredNumber(enteredText);
+  }
+
+  function confirmInputHandler() {
+    const chosenNumber = parseInt(enteredNumber);
+
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert("Invalid number!", "Please enter a number between 1 and 99", [
+        { text: "Okay", style: "destructive", onPress: resetGame },
+      ]);
+      return;
+    }
+
+    props.startGame(enteredNumber);
+  }
+
+  function resetGame() {
+    setEnteredNumber("");
+  }
+
   return (
     <View style={styles.inputWrapper}>
       <TextInput
@@ -11,10 +35,12 @@ const StartGameScreen = () => {
         //these next properties are not relevant for this app, but it's important to be aware of these properties for better UX when working with input fields
         autoCapitalize="none"
         autoCorrect={false}
+        onChangeText={numberInputHandler}
+        value={enteredNumber}
       />
       <View style={styles.buttonWrapper}>
-        <PrimaryButton>Reset</PrimaryButton>
-        <PrimaryButton>Confirm</PrimaryButton>
+        <PrimaryButton onPress={resetGame}>Reset</PrimaryButton>
+        <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
       </View>
     </View>
   );
