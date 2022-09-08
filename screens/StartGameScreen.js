@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { TextInput, StyleSheet, View, Alert } from "react-native";
+import { TextInput, StyleSheet, View, Alert, Text } from "react-native";
+
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Card from "../components/ui/Card";
+import Title from "../components/ui/Title";
+import Colors from "../utilities/colors";
 
 const StartGameScreen = (props) => {
   const [enteredNumber, setEnteredNumber] = useState("");
@@ -27,21 +31,25 @@ const StartGameScreen = (props) => {
   }
 
   return (
-    <View style={styles.inputWrapper}>
-      <TextInput
-        style={styles.numberInput}
-        maxLength={2}
-        keyboardType="number-pad"
-        //these next properties are not relevant for this app, but it's important to be aware of these properties for better UX when working with input fields
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={numberInputHandler}
-        value={enteredNumber}
-      />
-      <View style={styles.buttonWrapper}>
-        <PrimaryButton onPress={resetGame}>Reset</PrimaryButton>
-        <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
-      </View>
+    <View style={styles.rootContainer}>
+      <Title>Guess My Number</Title>
+      <Card>
+        <Text style={styles.instructionText}>Enter a number</Text>
+        <TextInput
+          style={styles.numberInput}
+          maxLength={2}
+          keyboardType="number-pad"
+          //these next properties are not relevant for this app, but it's important to be aware of these properties for better UX when working with input fields
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={numberInputHandler}
+          value={enteredNumber}
+        />
+        <View style={styles.buttonWrapper}>
+          <PrimaryButton onPress={resetGame}>Reset</PrimaryButton>
+          <PrimaryButton onPress={confirmInputHandler}>Confirm</PrimaryButton>
+        </View>
+      </Card>
     </View>
   );
 };
@@ -49,23 +57,17 @@ const StartGameScreen = (props) => {
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    marginTop: 100,
+    alignItems: "center",
+  },
   buttonWrapper: {
     flexDirection: "row",
   },
-  inputWrapper: {
-    alignItems: "center",
-    marginTop: 100,
-    marginHorizontal: 24,
-    padding: 16,
-    backgroundColor: "#3b012f",
-    borderRadius: 8,
-    //creating shadow in android
-    elevation: 30,
-    //creating shadow in iOS
-    shadowColor: "black",
-    shadowOffset: { width: 6, height: 4 },
-    shadowRadius: 6,
-    shadowOpacity: 0.5,
+  instructionText: {
+    color: Colors.accent500,
+    fontSize: 24,
   },
   numberInput: {
     height: 50,
